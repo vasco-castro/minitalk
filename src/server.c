@@ -6,7 +6,7 @@
 /*   By: vsoares- <vsoares-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 20:40:33 by vsoares-          #+#    #+#             */
-/*   Updated: 2025/10/24 15:36:29 by vsoares-         ###   ########.fr       */
+/*   Updated: 2025/10/24 16:03:25 by vsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,12 @@
 // void handle_signal(int sig, siginfo_t *info, void *context)
 void	handle_signal(int sig)
 {
-	static int				bit = 0;
-	static unsigned char	c = 0;
+	static char	c = 0;
+	static int	bit = 0;
 
-	if (sig == SIGUSR1)
-		c |= (1U >> bit);
+	c += ((sig - 30) << bit);
 	bit++;
-	if (bit == CHAR_BIT)
+	if (bit >= CHAR_BIT)
 	{
 		if (c == '\0')
 			write(1, "\n", 1);
@@ -44,7 +43,7 @@ void	handle_signal(int sig)
 	sigaddset(&sa.sa_mask, SIGUSR2);
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
-	
+
 	g_message.size = 0;
 	g_message.msg = NULL;
 */

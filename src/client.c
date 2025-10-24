@@ -6,7 +6,7 @@
 /*   By: vsoares- <vsoares-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 20:41:39 by vsoares-          #+#    #+#             */
-/*   Updated: 2025/10/24 15:38:22 by vsoares-         ###   ########.fr       */
+/*   Updated: 2025/10/24 16:02:07 by vsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,18 +45,16 @@ static void	send_char(char c)
 {
 	int	bit;
 
-	printf("Sending character: %c\n", c);
 	bit = 0;
 	while (bit < CHAR_BIT)
 	{
 		if (c >> bit & 1)
-			kill(g_message.pid, SIGUSR1);
-		else
 			kill(g_message.pid, SIGUSR2);
+		else
+			kill(g_message.pid, SIGUSR1);
 		bit++;
 		usleep(100);
 	}
-	printf("\nCharacter %c sent.\n", c);
 }
 
 static void	send_message(void)
