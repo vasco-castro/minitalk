@@ -20,7 +20,8 @@ void	handle_signal(int sig)
 	static char	c = 0;
 	static int	bit = 0;
 
-	c += ((sig - 30) << bit);
+	if (sig == SIGUSR2)
+		c += (1 << bit);
 	bit++;
 	if (bit >= CHAR_BIT)
 	{

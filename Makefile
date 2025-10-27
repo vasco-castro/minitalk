@@ -8,12 +8,12 @@ all: $(NAME)
 
 $(NAME): client server
 
-server: $(LIBFT) $(OBJ_SERVER)
+server: $(OBJ_SERVER) $(LIBFT)
 	@printf "$(GREEN)Building $(NAME) server.$(RESET)\n"
 	@$(BANNER)
 	@$(COMPILE) $(OBJ_SERVER) $(LIBFT) $(LIBFT_FLAGS) -o server
 
-client: $(LIBFT) $(OBJ_CLIENT)
+client: $(OBJ_CLIENT) $(LIBFT)
 	@printf "$(GREEN)Building $(NAME) client.$(RESET)\n"
 	@$(BANNER)
 	@$(COMPILE) $(OBJ_CLIENT) $(LIBFT) $(LIBFT_FLAGS) -o client
@@ -21,6 +21,7 @@ client: $(LIBFT) $(OBJ_CLIENT)
 clean:
 	@printf "$(YELLOW)Cleaning objects.$(RESET)\n"
 	@$(REMOVE) $(OBJ_SERVER) $(OBJ_CLIENT)
+	@make clean -s -C $(LIBFT_DIR)
 
 fclean: clean
 	@printf "$(YELLOW)Cleaning binaries.$(RESET)\n"
