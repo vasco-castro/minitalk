@@ -8,11 +8,11 @@ all: $(NAME)
 
 $(NAME): client server
 
-server: $(OBJ_SERVER) $(LIBFT)
+server: $(LIBFT) $(OBJ_SERVER)
 	@printf "$(GREEN)Building $(NAME) server.$(RESET)\n"
 	@$(COMPILE) $(OBJ_SERVER) $(LIBFT) $(LIBFT_FLAGS) -o server
 
-client: $(OBJ_CLIENT) $(LIBFT)
+client: $(LIBFT) $(OBJ_CLIENT)
 	@printf "$(GREEN)Building $(NAME) client.$(RESET)\n"
 	@$(COMPILE) $(OBJ_CLIENT) $(LIBFT) $(LIBFT_FLAGS) -o client
 
