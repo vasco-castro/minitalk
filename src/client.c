@@ -41,42 +41,37 @@ static bool	handle_args(int argc, char const *argv[])
 	return (true);
 }
 
-static void	send_char(char c)
+static void	send_bit()
 {
-	int	bit;
+	static int	i = 0;
+	static int	bit = 0;
 
-	bit = 0;
-	while (bit < CHAR_BIT)
+	if (bit == CHAR_BIT)
 	{
-		if (c >> bit & 1)
-			kill(g_message.pid, SIGUSR2);
-		else
-			kill(g_message.pid, SIGUSR1);
-		bit++;
-		usleep(100);
-	}
-}
-
-static void	send_message(void)
-{
-	int	i;
-
-	i = 0;
-	while (i <= g_message.size)
-	{
-		send_char(g_message.msg[i]);
+		bit = 0;
 		i++;
 	}
+	if (g_message.msg[i] >> bit & 1)
+		kill(g_message.pid, SIGUSR2);
+	else
+		kill(g_message.pid, SIGUSR1);
+	bit++;
 }
 
-// TODO: Validate pid exists
-// TODO: Handle server not responding
-// TODO: Handle signals from server (acknowledgements)
+static void	finish()
+{
+	write(1, "Message sent successfully.\n", 27);
+	exit(EXIT_SUCCESS);
+}
+
 int	main(int argc, char const *argv[])
 {
 	if (!handle_args(argc, argv))
 		return (EXIT_FAILURE);
-	send_message();
-	ft_printf("Message sent successfully.\n");
+	signal(SIGUSR1, send_bit);
+	signal(SIGUSR2, finish);
+	send_bit();
+	while (42)
+		pause();
 	return (EXIT_SUCCESS);
 }

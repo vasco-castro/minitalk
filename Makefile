@@ -10,12 +10,10 @@ $(NAME): client server
 
 server: $(OBJ_SERVER) $(LIBFT)
 	@printf "$(GREEN)Building $(NAME) server.$(RESET)\n"
-	@$(BANNER)
 	@$(COMPILE) $(OBJ_SERVER) $(LIBFT) $(LIBFT_FLAGS) -o server
 
 client: $(OBJ_CLIENT) $(LIBFT)
 	@printf "$(GREEN)Building $(NAME) client.$(RESET)\n"
-	@$(BANNER)
 	@$(COMPILE) $(OBJ_CLIENT) $(LIBFT) $(LIBFT_FLAGS) -o client
 
 clean:
