@@ -19,9 +19,7 @@ LIBFT_DIR = $(LIB_DIR)/libft
 LIBFT = $(LIBFT_DIR)/libft.a
 LIBFT_FLAGS = -L$(LIBFT_DIR)/include
 
-$(LIBFT_DIR)/.git:
-	git submodule update --init $(LIBFT_DIR)
 
-$(LIBFT): $(LIBFT_DIR)/.git
+$(LIBFT):
 	@printf "$(GREEN)Building LIBFT.$(RESET)\n"
 	@make -s -C $(LIBFT_DIR)
