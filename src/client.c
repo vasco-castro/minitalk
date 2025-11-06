@@ -6,7 +6,7 @@
 /*   By: vsoares- <vsoares-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 20:41:39 by vsoares-          #+#    #+#             */
-/*   Updated: 2025/11/06 18:39:32 by vsoares-         ###   ########.fr       */
+/*   Updated: 2025/11/06 18:54:29 by vsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,6 @@ static void	send_char(void)
 	bit++;
 }
 
-static void	finish(void)
-{
-	write(1, "Message sent successfully.\n", 27);
-	exit(EXIT_SUCCESS);
-}
-
 void	handle_sigaction(int sig, siginfo_t *info, void *context)
 {
 	static int	size = 0;
@@ -81,8 +75,11 @@ void	handle_sigaction(int sig, siginfo_t *info, void *context)
 	(void)info;
 	(void)context;
 	if (sig == SIGUSR2)
-		finish();
-	if(size < 32)
+	{
+		write(1, "Message sent successfully.\n", 27);
+		exit(EXIT_SUCCESS);
+	}
+	if (size < 32)
 	{
 		send_size();
 		size++;
@@ -96,7 +93,6 @@ int	main(int argc, char const *argv[])
 	struct sigaction	sa;
 
 	handle_args(argc, argv);
-
 	sa.sa_flags = SA_SIGINFO;
 	sa.sa_sigaction = &handle_sigaction;
 	sigemptyset(&sa.sa_mask);

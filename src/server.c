@@ -6,7 +6,7 @@
 /*   By: vsoares- <vsoares-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 20:40:33 by vsoares-          #+#    #+#             */
-/*   Updated: 2025/11/06 18:48:12 by vsoares-         ###   ########.fr       */
+/*   Updated: 2025/11/06 18:54:01 by vsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,13 @@
 
 t_message	g_message;
 
-void	print_message()
+void	print_message(void)
 {
 	ft_printf("%s", g_message.msg);
 	kill(g_message.pid, SIGUSR2);
-	// ft_bzero(g_message.msg, g_message.size + 1);
 	free(g_message.msg);
 	g_message.size = 0;
 	g_message.pid = 0;
-}
-
-void	setup_msg()
-{
-	g_message.msg = ft_calloc(g_message.size + 1, sizeof(char));
-	if (!g_message.msg)
-	{
-		ft_fprintf(2,"Error with allocation!\n");
-		exit(EXIT_FAILURE);
-	}
 }
 
 void	parse_size(int sig)
@@ -57,7 +46,7 @@ void	parse_char(int sig)
 		i++;
 		bit = 0;
 	}
-	if(i == g_message.size)
+	if (i == g_message.size)
 	{
 		i = 0;
 		print_message();
@@ -70,12 +59,19 @@ void	handle_sigaction(int sig, siginfo_t *info, void *context)
 {
 	static int	bit = 0;
 
-	if(bit == 0)
+	if (bit == 0)
 		g_message.pid = info->si_pid;
 	if (bit < 32)
 		parse_size(sig);
 	if (bit == 32)
-		setup_msg();
+	{
+		g_message.msg = ft_calloc(g_message.size + 1, sizeof(char));
+		if (!g_message.msg)
+		{
+			ft_fprintf(2, "Error with allocation!\n");
+			exit(EXIT_FAILURE);
+		}
+	}
 	if (bit >= 32)
 		parse_char(sig);
 	bit++;
